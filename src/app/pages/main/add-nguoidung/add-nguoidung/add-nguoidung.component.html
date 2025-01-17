@@ -1,0 +1,39 @@
+<div style="width: 400px;padding : 20px">
+    <div style="margin-top: 20px;">
+        <mat-form-field>
+            <mat-label>Lớp</mat-label>
+            <mat-select style="width: 100%;" [(value)]="lopId">
+                @for (lop of listDanhSachLop; track lopId) {
+                <mat-option [value]="lop.id">{{lop.tenLop}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <mat-form-field>
+            <mat-label>Người dùng</mat-label>
+            <mat-select style="width: 100%;" [(value)]="nguoiDungId">
+                @for (hs of listNguoiDung; track nguoiDungId) {
+                <mat-option [value]="hs.id">{{hs.hoTen}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <mat-form-field>
+            <mat-label>Năm học</mat-label>
+            <mat-select style="width: 100%;" [(value)]="namHoc">
+                @for (namhoc of listNamHoc; track namHoc) {
+                <mat-option [value]="namhoc.value">{{namhoc.label}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div style="margin-top: 20px; ">
+        <button mat-stroked-button (click)="addNguoiDung()">Thêm </button>
+
+    </div>
+</div>
