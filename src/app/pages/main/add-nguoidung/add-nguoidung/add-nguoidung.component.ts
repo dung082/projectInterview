@@ -6,6 +6,7 @@ import { HSTrongLop, Lop, NguoiDung, NguoiDungDto } from '../../main-models/main
 import { MainService } from '../../main-service/main.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-add-nguoidung',
@@ -15,6 +16,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrl: './add-nguoidung.component.css'
 })
 export class AddNguoidungComponent {
+  readonly #modal = inject(NzModalRef);
+
   toastr = inject(ToastrService)
   listHS: HSTrongLop[] = []
   listDanhSachLop: Lop[] = []
@@ -51,8 +54,6 @@ export class AddNguoidungComponent {
     }
   ]
   addForm = new FormGroup({
-
-    id: new FormControl<number | null>(null, [Validators.required]),
     lopId: new FormControl<number | null>(null, [Validators.required]),
     nguoiDungId: new FormControl<number | null>(null, [Validators.required]),
     namHoc: new FormControl<number | null>(null, [Validators.required])
@@ -81,27 +82,34 @@ export class AddNguoidungComponent {
   }
 
   addNguoiDung = () => {
-    let dto = {
-      id: 0,
-      lopId: this.lopId,
-      nguoiDungId: this.nguoiDungId,
-      namhoc: this.namHoc
-    }
+    if (this.addForm.valid) {
 
-    this.mainService.addNguoiDung(dto).subscribe((response: any) => {
-
-      this.toastr.success('Thành công', 'Thêm mới thành công');
-
-      this.store.dispatch(layDanhSachHocSinhAction({ pageNumber: this.pageNumber, pageSize: this.pageSize, lopId: this.lopIdReload, namHoc: this.namHocReload }))
-      // this.dialogRef.close();
-
-    },
-      error => {
-        console.log('checkerror ', error);
-
-        this.toastr.error('Thêm mới thất bại', 'Thất bại');
+      let dto = {
+        id: 0,
+        lopId: this.addForm.get('lopId')?.value,
+        nguoiDungId: this.addForm.get('nguoiDungId')?.value,
+        namhoc: this.addForm.get('namHoc')?.value
       }
-    )
+
+      this.mainService.addNguoiDung(dto).subscribe((response: any) => {
+
+        this.toastr.success('Thành công', 'Thêm mới thành công');
+
+        this.store.dispatch(layDanhSachHocSinhAction({ pageNumber: this.pageNumber, pageSize: this.pageSize, lopId: this.lopIdReload, namHoc: this.namHocReload }))
+        // this.dialogRef.close();
+        this.#modal.destroy()
+
+      },
+        error => {
+          console.log('checkerror ', error);
+
+          this.toastr.error('Thêm mới thất bại', 'Thất bại');
+        }
+      )
+    }
+    else {
+      this.addForm.markAllAsTouched()
+    }
 
   }
 }

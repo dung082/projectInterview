@@ -8,6 +8,7 @@ import { AddLopComponent } from './add-lop/add-lop.component';
 import { EditLopComponent } from './edit-lop/edit-lop.component';
 import { LopService } from './lop-service/lop.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lop',
@@ -25,7 +26,7 @@ export class LopComponent {
   pageSize: number = 0
   searchString: string = ''
   searchStringInput: string = ''
-  constructor(private store: Store, private lopService: LopService, private modal: NzModalService) {
+  constructor(private store: Store, private lopService: LopService, private modal: NzModalService, private router: Router) {
     this.store.select(selectorLopState).subscribe((state: any) => {
       console.log(state)
       this.listLopTable = state.listLopDataTable
@@ -41,6 +42,10 @@ export class LopComponent {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.store.dispatch(searchLopAction({ searchString: this.searchString, pageNumber: this.pageNumber, pageSize: this.pageSize }))
+  }
+
+  goToQLLop() {
+    this.router.navigate(['/hstronglop'])
   }
 
   onChangePage(event: any) {

@@ -6,6 +6,7 @@ import { MainService } from '../main-service/main.service';
 import { Store } from '@ngrx/store';
 import { selectMainDSLop } from '../main-reducer/main.selector';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-update-nguoidung',
@@ -16,6 +17,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class UpdateNguoidungComponent {
   toastr = inject(ToastrService)
+  readonly #modal = inject(NzModalRef);
+  readonly nzModalData: HSTrongLop = inject(NZ_MODAL_DATA);
   listHS: HSTrongLop[] = []
   listDanhSachLop: Lop[] = []
   listNguoiDung: NguoiDung[] = []
@@ -66,10 +69,10 @@ export class UpdateNguoidungComponent {
 
   updateForm = new FormGroup({
 
-    // id: new FormControl<number | null>({ value: inject<any>(MAT_DIALOG_DATA)?.nguoiDungTrongLop?.id, disabled: true }, [Validators.required]),
-    // lopId: new FormControl<number | null>({ value: inject<any>(MAT_DIALOG_DATA)?.nguoiDungTrongLop?.lopId, disabled: false }, [Validators.required]),
-    // nguoiDungId: new FormControl<number | null>({ value: inject<any>(MAT_DIALOG_DATA)?.nguoiDungTrongLop?.nguoiDungId, disabled: true }, [Validators.required]),
-    // namHoc: new FormControl<number | null>({ value: inject<any>(MAT_DIALOG_DATA)?.nguoiDungTrongLop?.namhoc, disabled: true }, [Validators.required])
+    id: new FormControl<number | null>({ value: this.nzModalData.id, disabled: true }, [Validators.required]),
+    lopId: new FormControl<number | null>({ value: this.nzModalData.lopId, disabled: false }, [Validators.required]),
+    nguoiDungId: new FormControl<number | null>({ value: this.nzModalData.nguoiDungId, disabled: true }, [Validators.required]),
+    namHoc: new FormControl<number | null>({ value: this.nzModalData.namhoc, disabled: true }, [Validators.required])
   })
 
   ngOnInit() {
@@ -84,28 +87,33 @@ export class UpdateNguoidungComponent {
   }
 
   saveNguoiDung = () => {
+    if (this.updateForm.valid) {
 
-    // let dto = {
-    //   id: this.updateForm.controls.id,
-    //   lopId: this.updateForm.controls.lopId,
-    //   nguoiDungId: this.updateForm.controls.nguoiDungId,
-    //   namhoc: this.updateForm.controls.namHoc
-    // }
+      let dto = {
+        id: this.updateForm.get('id')?.value,
+        lopId: this.updateForm.get('lopId')?.value,
+        nguoiDungId: this.updateForm.get('nguoiDungId')?.value,
+        namhoc: this.updateForm.get('namHoc')?.value
+      }
 
-    // this.mainService.updateNguoiDung(dto).subscribe((response: any) => {
+      this.mainService.updateNguoiDung(dto).subscribe((response: any) => {
 
-    //   this.toastr.success('Thành công', 'Sửa thông tin người dùng thành công');
+        this.toastr.success('Thành công', 'Sửa thông tin người dùng thành công');
 
-    //   this.store.dispatch(layDanhSachHocSinhAction({ pageNumber: this.pageNumber, pageSize: this.pageSize, lopId: this.lopIdReload, namHoc: this.namHocReload }))
-    //   // this.dialogRef.close();
+        this.store.dispatch(layDanhSachHocSinhAction({ pageNumber: this.pageNumber, pageSize: this.pageSize, lopId: this.lopIdReload, namHoc: this.namHocReload }))
+        this.#modal.destroy()
 
-    // },
-    //   error => {
-    //     console.log('checkerror ', error);
+      },
+        error => {
+          console.log('checkerror ', error);
 
-    //     this.toastr.error('Sửa thông tin người dùng thất bại', 'Thất bại');
-    //   }
-    // )
+          this.toastr.error('Sửa thông tin người dùng thất bại', 'Thất bại');
+        }
+      )
+    }
+    else {
+      this.updateForm.markAllAsTouched()
+    }
 
   }
 }

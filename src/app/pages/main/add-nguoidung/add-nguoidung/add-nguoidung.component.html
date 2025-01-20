@@ -1,7 +1,47 @@
-<form style="width: 400px;padding : 20px" [formGroup]="addForm" (submit)="addNguoiDung()">
+<form class="p-5" [formGroup]="addForm" (submit)="addNguoiDung()">
 
-    <div style="margin-top: 20px; ">
-        <button mat-stroked-button type="submit">Thêm </button>
+
+    <div class="mt-2">
+        <span>
+            Người dùng
+        </span>
+        <div>
+            <nz-select class="w-full" formControlName="nguoiDungId" nzAllowClear nzPlaceHolder="Chọn năm học">
+                @for (option of listNguoiDung; track option) {
+                <nz-option [nzValue]="option.id" [nzLabel]="option.hoTen"></nz-option>
+                }
+            </nz-select>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <span>
+            Lớp
+        </span>
+        <div>
+            <nz-select class="w-full" formControlName="lopId" nzAllowClear nzPlaceHolder="Chọn năm học">
+                @for (option of listDanhSachLop; track option) {
+                <nz-option [nzValue]="option.id" [nzLabel]="option.tenLop"></nz-option>
+                }
+            </nz-select>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <span>
+            Năm học
+        </span>
+        <div>
+            <nz-select class="w-full" formControlName="namHoc" nzAllowClear nzPlaceHolder="Chọn năm học">
+                @for (option of listNamHoc; track option) {
+                <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+                }
+            </nz-select>
+        </div>
+    </div>
+
+    <div class="mt-2 text-center">
+        <button nz-button nzType="primary" type="submit">Thêm </button>
 
     </div>
 </form>

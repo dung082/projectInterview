@@ -1,12 +1,63 @@
 <div>
-    <div style="width: 1000px; margin:auto; padding: 50px;">
-        <div style="display: flex; justify-content: center; align-items: center;">
+    <div class="w-4/5 m-auto p-[50px]">
+        <div class="flex items-end justify-center">
+            <div>
+                <span>Lớp</span>
+                <div>
+                    <nz-select ngModel="lopId" (ngModelChange)="changeLop($event)" nzAllowClear
+                        nzPlaceHolder="Chọn lớp">
+                        @for (option of listDanhSachLop; track option) {
+                        <nz-option [nzValue]="option.id" [nzLabel]="option.tenLop"></nz-option>
+                        }
+                    </nz-select>
+                </div>
+            </div>
 
+            <div class="ml-2">
+                <span>Năm học</span>
+                <div>
+                    <nz-select ngModel="namhoc" (ngModelChange)="changeNamHoc($event)" nzAllowClear
+                        nzPlaceHolder="Chọn năm học">
+                        @for (option of listNamHoc; track option) {
+                        <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+                        }
+                    </nz-select>
+                </div>
+            </div>
+            <button type="button" nz-button nzType="primary" (click)="find()" class="ml-2">Tìm kiếm</button>
+            <button type="button" nz-button nzType="primary" (click)="themThongTin()" class="ml-2">Thêm mới</button>
 
         </div>
 
-        <div>
+        <div class="mt-2">
+            <nz-table #basicTable [nzData]="listHS" nzShowPagination nzShowSizeChanger [nzTotal]="totalItems"
+                [nzPageSize]="pageSize" [nzTotal]="totalItems" (nzPageIndexChange)="pageIndexChange($event)"
+                (nzPageSizeChange)="pageSizeChange($event)">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Họ và tên</th>
+                        <th>Tên lớp</th>
+                        <th>Năm học </th>
+                        <th>Công cụ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of basicTable.data">
+                        <td>{{data.id}}</td>
+                        <td>{{data.hoTen}}</td>
+                        <td>{{data.tenLop}}</td>
+                        <td>{{data.namhoc}}</td>
+                        <td>
+                            <button nz-button nzType="text" (click)="suaThongTin(data)">Sửa</button>
+                            <button nz-button nzType="text" class="text-red-600"
+                                (click)="xoaThongTin(data.id)">Xóa</button>
 
+                        </td>
+                        <!-- <td>{{data.ngaySinh}}</td> -->
+                    </tr>
+                </tbody>
+            </nz-table>
         </div>
 
     </div>

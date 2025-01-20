@@ -40,7 +40,7 @@ import { EditLopComponent } from './pages/lop/edit-lop/edit-lop.component';
 const routes: Routes = [
   {
     path: '',
-    component: MainComponent
+    component: NguoidungComponent
   },
   {
     path: 'nguoidung',
@@ -49,6 +49,10 @@ const routes: Routes = [
   {
     path: 'lop',
     component: LopComponent
+  },
+  {
+    path: 'hstronglop',
+    component: MainComponent
   },
 ];
 registerLocaleData(vi);
