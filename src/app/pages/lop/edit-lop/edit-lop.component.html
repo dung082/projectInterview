@@ -1,0 +1,24 @@
+<form [formGroup]="addForm" (submit)="addLop()">
+    <div class="text-center">
+        Sửa thông tin lớp
+    </div>
+
+    <div>
+        <span>Mã lớp</span>
+        <div>
+            <input nz-input placeholder="Nhập mã lớp" formControlName="maLop" />
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <span>Tên lớp</span>
+        <div>
+            <input nz-input placeholder="Nhập tên lớp" formControlName="tenLop" />
+        </div>
+    </div>
+
+    <div class="mt-2 text-center">
+        <button nz-button nzType="default" type="button" (click)="closeModal()">Đóng </button>
+        <button nz-button nzType="primary" type="submit" class="ml-2">Lưu thông tin </button>
+    </div>
+</form>

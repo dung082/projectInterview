@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { exhaustMap, map } from "rxjs";
-import { ganDanhSachHocSinhAction, ganDanhSachLopAction, ganDanhSachNguoiDungAction, layDanhSachHocSinhAction, layDanhSachLopAction, layDanhSachNguoiDungAction } from "../main-action/main.action";
+import { ganDanhSachHocSinhAction, ganDanhSachLopAction, ganDanhSachNguoiDungAction, layDanhSachHocSinhAction, layDanhSachLopAction, layDanhSachNguoiDungAction, setTotalItemAction } from "../main-action/main.action";
 import { MainService } from "../main-service/main.service";
 
 
@@ -20,10 +20,12 @@ export class MainEffect {
         return this.actions$.pipe(
             ofType(layDanhSachHocSinhAction),
             exhaustMap((action) =>
-                this.mainService.layDanhSach(action.lopId, action.namHoc).pipe(
+                this.mainService.layDanhSach(action.pageNumber, action.pageSize, action.lopId, action.namHoc).pipe(
                     map((response: any) => {
                         // Trả về action thay vì dispatch
-                        this.store.dispatch(ganDanhSachHocSinhAction({ listHs: response }));
+                        console.log(response);
+                        this.store.dispatch(setTotalItemAction({ totalItem: response?.total }))
+                        this.store.dispatch(ganDanhSachHocSinhAction({ listHs: response?.results }));
                     })
                 )
             )

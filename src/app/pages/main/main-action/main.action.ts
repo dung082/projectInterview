@@ -12,14 +12,21 @@ export enum MainAction {
     CHANGE_LOP = "[MAIN_ACTION]CHANGE_LOP",
     LAY_DS_NGUOIDUNG = "[MAIN_ACTION]LAY_DS_NGUOIDUNG",
     GAN_DS_NGUOIDUNG = "[MAIN_ACTION]GAN_DS_NGUOIDUNG",
-    THEM_ND_VAOLOP = "[MAIN_ACTION]THEM_ND_VAOLOP"
+    THEM_ND_VAOLOP = "[MAIN_ACTION]THEM_ND_VAOLOP",
+    SET_PAGE = '[MAIN_ACTION]SET_PAGE',
+    SET_TOTAL_ITEM = '[MAIN_ACTION]SET_TOTAL_ITEM',
+    SUA_NGUOIDUNG_TRONGLOP = '[MAIN_ACTION]SUA_NGUOIDUNG_TRONGLOP',
+    XOA_NGUOIDUNG_TRONGLOP = '[MAIN_ACTION]XOA_NGUOIDUNG_TRONGLOP'
 }
 
 export const layDanhSachHocSinhAction = createAction(
     MainAction.LAY_DS_TRONG_LOP,
     props<{
-        lopId: any,
-        namHoc: any
+        pageNumber: number,
+        pageSize: number,
+        lopId: number,
+        namHoc: number,
+
     }>()
 )
 
@@ -62,7 +69,28 @@ export const suaLopAction = createAction(
     props<{ lopId: number }>()
 )
 
+
+export const setPageAction = createAction(
+    MainAction.SET_PAGE,
+    props<{ pageNumber: number, pageSize: number }>()
+)
+
+export const setTotalItemAction = createAction(
+    MainAction.SET_TOTAL_ITEM,
+    props<{ totalItem: number }>()
+)
+
 export const themNguoiDungAction = createAction(
     MainAction.THEM_ND_VAOLOP,
     props<{ data: any, lopId: number, namHoc: number }>()
+)
+
+export const suaNguoiDungAction = createAction(
+    MainAction.SUA_NGUOIDUNG_TRONGLOP,
+    props<{ data: any }>()
+)
+
+export const xoaNguoiDungTrongLop = createAction(
+    MainAction.XOA_NGUOIDUNG_TRONGLOP,
+    props<{ id: any }>()
 )

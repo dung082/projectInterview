@@ -1,75 +1,12 @@
-<div style="height: 100vh; width: 100vw;">
+<div>
     <div style="width: 1000px; margin:auto; padding: 50px;">
         <div style="display: flex; justify-content: center; align-items: center;">
-            <div>
-                <mat-form-field>
-                    <mat-label>Năm học</mat-label>
-                    <mat-select [(value)]="namHoc" (selectionChange)="changeNamHoc($event)">
-                        @for (namhoc of listNamHoc; track namhoc) {
-                        <mat-option [value]="namhoc.value">{{namhoc.label}}</mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-            </div>
 
-
-            <div style="margin-left: 20px;">
-                <mat-form-field>
-                    <mat-label>Lớp</mat-label>
-                    <mat-select [(value)]="lopId" (selectionChange)="changeLop($event)">
-                        @for (lop of listDanhSachLop; track lopId) {
-                        <mat-option [value]="lop.id">{{lop.tenLop}}</mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
-            <div style="margin-left: 20px;">
-                <button mat-stroked-button (click)="getDanhSachNguoiDung()">Tra cứu</button>
-            </div>
-
-            <div style="margin-left: 20px;">
-                <button mat-stroked-button (click)="openDialog()">Thêm mới</button>
-            </div>
 
         </div>
 
         <div>
-            <div class="mat-elevation-z8">
-                <table mat-table [dataSource]="listHS">
 
-                    <!-- Position Column -->
-                    <ng-container matColumnDef="id">
-                        <th mat-header-cell *matHeaderCellDef> Số thứ tự </th>
-                        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-                    </ng-container>
-
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="hoTen">
-                        <th mat-header-cell *matHeaderCellDef> Họ và tên </th>
-                        <td mat-cell *matCellDef="let element"> {{element?.hoTen}} </td>
-                    </ng-container>
-
-                    <!-- Weight Column -->
-                    <ng-container matColumnDef="tenLop">
-                        <th mat-header-cell *matHeaderCellDef> Tên lớp </th>
-                        <td mat-cell *matCellDef="let element"> {{element?.tenLop}} </td>
-                    </ng-container>
-
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="ngaySinh">
-                        <th mat-header-cell *matHeaderCellDef> Ngày sinh </th>
-                        <td mat-cell *matCellDef="let element"> {{element?.ngaySinh}} </td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                </table>
-
-                <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-                    aria-label="Chọn">
-                </mat-paginator> -->
-            </div>
         </div>
 
     </div>

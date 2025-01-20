@@ -6,8 +6,8 @@ import { BaseService } from '../../../baseServices/base.service';
 })
 export class MainService extends BaseService {
 
-  layDanhSach = (lopId: number, namHoc: number) => {
-    return this.get(`nguoidungtronglop/getNguoiDungTrongLopByNamHoc?lopId=${lopId}&namHoc=${namHoc}`, {})
+  layDanhSach = (pageNumber: number, pageSize: number, lopId: number, namHoc: number) => {
+    return this.get(`nguoidungtronglop/getNguoiDungTrongLopByNamHoc?pageNumber=${pageNumber}&pageSize=${pageSize}&lopId=${lopId}&namHoc=${namHoc}`, {})
   }
 
   layDanhSachLop = () => {
@@ -20,6 +20,14 @@ export class MainService extends BaseService {
 
   addNguoiDung = (data: any) => {
     return this.post(`nguoidungtronglop/createNguoiDungTrongLop`, data, {})
+  }
+
+  updateNguoiDung = (data: any) => {
+    return this.post(`nguoidungtronglop/updateNguoiDungTrongLop`, data, {})
+  }
+
+  deleteNguoiDung = (id: any) => {
+    return this.post(`nguoidungtronglop/deleteNguoiDungTrongLop/${id}`, {}, {})
   }
 
 }

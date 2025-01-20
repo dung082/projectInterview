@@ -1,11 +1,11 @@
 import { Component, Inject, inject, model, signal } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { layDanhSachHocSinhAction, layDanhSachNguoiDungAction } from '../../main-action/main.action';
 import { selectMainDSLop } from '../../main-reducer/main.selector';
 import { HSTrongLop, Lop, NguoiDung, NguoiDungDto } from '../../main-models/main.model';
 import { MainService } from '../../main-service/main.service';
 import { ToastrService } from 'ngx-toastr';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-nguoidung',
@@ -22,6 +22,9 @@ export class AddNguoidungComponent {
   lopId: number = 0;
   namHoc: number = 0;
   nguoiDungId: number = 0;
+
+  pageNumber: number = 1;
+  pageSize: number = 10
 
   lopIdReload: number = 0
   namHocReload: number = 0
@@ -47,9 +50,15 @@ export class AddNguoidungComponent {
       label: 2025
     }
   ]
+  addForm = new FormGroup({
 
+    id: new FormControl<number | null>(null, [Validators.required]),
+    lopId: new FormControl<number | null>(null, [Validators.required]),
+    nguoiDungId: new FormControl<number | null>(null, [Validators.required]),
+    namHoc: new FormControl<number | null>(null, [Validators.required])
+  })
 
-  readonly dialogRef = inject(MatDialogRef<AddNguoidungComponent>);
+  // readonly dialogRef = inject(MatDialogRef<AddNguoidungComponent>);
   // readonly data = inject<>(MAT_DIALOG_DATA);
   // readonly animal = model(this.data.animal);
   constructor(private store: Store, private mainService: MainService) {
@@ -58,6 +67,8 @@ export class AddNguoidungComponent {
       this.listNguoiDung = state.listNguoiDung
       this.lopIdReload = state.lopId
       this.namHocReload = state.namHoc
+      this.pageNumber = state.pageNumber
+      this.pageSize = state.pageSize
     })
   }
 
@@ -81,8 +92,8 @@ export class AddNguoidungComponent {
 
       this.toastr.success('Thành công', 'Thêm mới thành công');
 
-      this.store.dispatch(layDanhSachHocSinhAction({ lopId: this.lopIdReload, namHoc: this.namHocReload }))
-      this.dialogRef.close();
+      this.store.dispatch(layDanhSachHocSinhAction({ pageNumber: this.pageNumber, pageSize: this.pageSize, lopId: this.lopIdReload, namHoc: this.namHocReload }))
+      // this.dialogRef.close();
 
     },
       error => {

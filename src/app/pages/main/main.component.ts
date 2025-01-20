@@ -1,12 +1,10 @@
 import { Component, inject, model, signal } from '@angular/core';
 import { HSTrongLop, Lop } from './main-models/main.model';
 import { Store } from '@ngrx/store';
-import { selectDsLop, selectMainDSLop } from './main-reducer/main.selector';
-import { layDanhSachHocSinhAction, layDanhSachLopAction, suaLopAction, suaNamHocAction } from './main-action/main.action';
-import { Observable, of } from 'rxjs';
-import { MainState } from './main-reducer/main.reducer';
-import { MatDialog } from '@angular/material/dialog';
+import { selectMainDSLop } from './main-reducer/main.selector';
+import { layDanhSachHocSinhAction, layDanhSachLopAction, setPageAction, suaLopAction, suaNamHocAction } from './main-action/main.action';
 import { AddNguoidungComponent } from './add-nguoidung/add-nguoidung/add-nguoidung.component';
+import { UpdateNguoidungComponent } from './update-nguoidung/update-nguoidung.component';
 
 @Component({
   selector: 'app-main',
@@ -21,6 +19,9 @@ export class MainComponent {
   listHS: HSTrongLop[] = [];
   namHoc: number = 0;
   lopId: number = 0;
+  pageNumber: number = 0
+  pageSize: number = 10
+  totalItem = 0
   listDanhSachLop: Lop[] = []
   listNamHoc = [
     {
@@ -37,28 +38,8 @@ export class MainComponent {
     }
   ]
   // displayedColumns: string[] = ['Số thứ tự', 'Họ và tên', 'Tên lớp', "Ngày sinh"];
-  displayedColumns: string[] = ['id', 'hoTen', 'tenLop', "ngaySinh"];
+  displayedColumns: string[] = ['id', 'hoTen', 'tenLop', "ngaySinh", "actions"];
   listLop: any = []
-
-
-  //dialog them
-  readonly animal = signal('');
-  readonly name = model('');
-  readonly dialog = inject(MatDialog);
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(AddNguoidungComponent, {
-      data: {},
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      if (result !== undefined) {
-        this.animal.set(result);
-      }
-    });
-  }
-
 
   constructor(
     private store: Store
@@ -69,6 +50,9 @@ export class MainComponent {
       this.listHS = state.listHsTrongLop
       this.namHoc = state.namHoc
       this.lopId = state.lopId
+      this.pageNumber = state.pageNumber
+      this.pageSize = state.pageSize
+      this.totalItem = state.totalItem
     })
   }
 
@@ -77,7 +61,7 @@ export class MainComponent {
   }
 
   getDanhSachNguoiDung = () => {
-    this.store.dispatch(layDanhSachHocSinhAction({ lopId: this.lopId, namHoc: this.namHoc }))
+    this.store.dispatch(layDanhSachHocSinhAction({ pageNumber: this.pageNumber, pageSize: this.pageSize, lopId: this.lopId, namHoc: this.namHoc }))
   }
 
   changeNamHoc = (event: any) => {
@@ -87,5 +71,15 @@ export class MainComponent {
 
   changeLop = (event: any) => {
     this.store.dispatch(suaLopAction({ lopId: event?.value }))
+  }
+
+  onChangePage = (event: any) => {
+    this.store.dispatch(setPageAction({ pageNumber: event.pageIndex, pageSize: event.pageSize }))
+    this.store.dispatch(layDanhSachHocSinhAction({ pageNumber: event.pageIndex, pageSize: event.pageSize, lopId: this.lopId, namHoc: this.namHoc }))
+  }
+
+
+  deleteNguoiDung(event: any) {
+    console.log(event);
   }
 }
