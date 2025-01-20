@@ -4,7 +4,7 @@ import interview.projectInterview.ViewDto.NguoiDungTrongLopViewDto;
 
 import java.util.List;
 
-public class NguoiDungTrongLopResponseDto<NguoiDungTrongLopViewDto> {
+        public class NguoiDungTrongLopResponseDto<NguoiDungTrongLopViewDto> {
     private  long total;
     private List<NguoiDungTrongLopViewDto> results;
 
