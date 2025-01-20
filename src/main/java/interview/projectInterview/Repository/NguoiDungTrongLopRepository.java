@@ -2,6 +2,8 @@ package interview.projectInterview.Repository;
 
 import interview.projectInterview.Models.NguoiDungTrongLop;
 import interview.projectInterview.ViewDto.NguoiDungTrongLopViewDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,7 +20,7 @@ public interface NguoiDungTrongLopRepository extends JpaRepository<NguoiDungTron
             "JOIN NguoiDung nd ON ng.nguoiDungId = nd.id " +
             "JOIN Lop l ON ng.lopId = l.id " +
             "WHERE l.id = :lopid AND ng.namhoc = :namhoc")
-    List<NguoiDungTrongLopViewDto> getNguoiDungTrongLopByNamHoc(@Param("namhoc") int namhoc, @Param("lopid") Long lopid);
+    Page<NguoiDungTrongLopViewDto> getNguoiDungTrongLopByNamHoc(@Param("namhoc") int namhoc, @Param("lopid") Long lopid , Pageable pageable);
 
 
     @Query("SELECT new interview.projectInterview.Models.NguoiDungTrongLop( " +

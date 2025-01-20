@@ -1,10 +1,12 @@
 package interview.projectInterview.Controllers;
 
 import interview.projectInterview.Models.NguoiDungTrongLop;
+import interview.projectInterview.ResponseDto.NguoiDungTrongLopResponseDto;
 import interview.projectInterview.Services.Interface.INguoiDungTrongLopService;
 import interview.projectInterview.ViewDto.NguoiDungTrongLopViewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,13 +20,15 @@ public class NguoiDungTrongLopController {
     private INguoiDungTrongLopService iNguoiDungTrongLopService;
 
     @GetMapping("/getAllNguoiDung")
-    public List<NguoiDungTrongLopViewDto> getAllNguoiDungTrongLop() {
-        return iNguoiDungTrongLopService.getAllNguoiDungTrongLop();
+    public List<NguoiDungTrongLopViewDto> getAllNguoiDungTrongLop(  @RequestParam(defaultValue = "0") int pageNumber,
+                                                                    @RequestParam(defaultValue = "10") int pageSize) {
+        return iNguoiDungTrongLopService.getAllNguoiDungTrongLop(pageNumber,pageSize);
     }
 
-    @GetMapping("/getNguoiDungTrongLopByNamHoc")
-    public List<NguoiDungTrongLopViewDto> getNguoiDungTrongLopByNamHoc(@RequestParam int namHoc, @RequestParam long lopId) {
-        return iNguoiDungTrongLopService.getNguoiDungTrongLopByNamHoc(namHoc, lopId);
+        @GetMapping("/getNguoiDungTrongLopByNamHoc")
+    public NguoiDungTrongLopResponseDto<NguoiDungTrongLopViewDto> getNguoiDungTrongLopByNamHoc(@RequestParam(defaultValue = "0") int pageNumber,
+                                                                                               @RequestParam(defaultValue = "10") int pageSize, @RequestParam int namHoc, @RequestParam long lopId) {
+        return iNguoiDungTrongLopService.getNguoiDungTrongLopByNamHoc(pageNumber,pageSize,namHoc, lopId);
     }
 
     @RequestMapping(path = "/createNguoiDungTrongLop", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -34,4 +38,17 @@ public class NguoiDungTrongLopController {
         return iNguoiDungTrongLopService.createNguoiDungTrongLop(nguoiDungTrongLop);
     }
 
+
+    @RequestMapping(path = "/updateNguoiDungTrongLop", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public NguoiDungTrongLop updateNguoiDungTrongLop(@RequestBody NguoiDungTrongLop nguoiDungTrongLop) throws Exception {
+
+        return iNguoiDungTrongLopService.updateNguoiDungTrongLop    (nguoiDungTrongLop);
+    }
+
+    @RequestMapping(path = "/deleteNguoiDungTrongLop/{id}", method = RequestMethod.POST)
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        iNguoiDungTrongLopService.deleteNguoiDungTrongLop(id);
+        return ResponseEntity.noContent().build();
+    }
 }

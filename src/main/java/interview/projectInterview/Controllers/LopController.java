@@ -18,7 +18,7 @@ public class LopController {
     @Autowired
     private ILopService iLopService;
 
-    @GetMapping("/getAllLop")
+        @GetMapping("/getAllLop")
     public List<Lop> getAllLop() {
         return iLopService.getAllLop();
     }

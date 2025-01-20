@@ -6,9 +6,13 @@ import interview.projectInterview.Models.NguoiDungTrongLop;
 import interview.projectInterview.Repository.LopRepository;
 import interview.projectInterview.Repository.NguoiDungRepository;
 import interview.projectInterview.Repository.NguoiDungTrongLopRepository;
+import interview.projectInterview.ResponseDto.NguoiDungTrongLopResponseDto;
 import interview.projectInterview.Services.Interface.INguoiDungTrongLopService;
 import interview.projectInterview.ViewDto.NguoiDungTrongLopViewDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,9 +38,11 @@ public class NguoiDungTrongLopService implements INguoiDungTrongLopService {
     }
 
     @Override
-    public List<NguoiDungTrongLopViewDto> getAllNguoiDungTrongLop() {
+    public List<NguoiDungTrongLopViewDto> getAllNguoiDungTrongLop(int pageNumber, int pageSize) {
         List<NguoiDungTrongLopViewDto> listNguoiDungTrongLopView = new ArrayList<NguoiDungTrongLopViewDto>();
-        List<NguoiDungTrongLop> nguoiDungTrongLop = nguoiDungTrongLopRepository.findAll();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        Page<NguoiDungTrongLop> nguoiDungTrongLop = nguoiDungTrongLopRepository.findAll(pageable);
         if (!nguoiDungTrongLop.isEmpty()) {
             nguoiDungTrongLop.forEach(nguoiDungTrongLopView -> {
                 NguoiDung nguoiDung = nguoiDungRepository.findById(nguoiDungTrongLopView.getNguoiDungId()).orElseThrow(null);
@@ -83,8 +89,30 @@ public class NguoiDungTrongLopService implements INguoiDungTrongLopService {
     }
 
     @Override
-    public List<NguoiDungTrongLopViewDto> getNguoiDungTrongLopByNamHoc(int namHoc, long lopId) {
-        return nguoiDungTrongLopRepository.getNguoiDungTrongLopByNamHoc(namHoc, lopId);
+    public NguoiDungTrongLopResponseDto<NguoiDungTrongLopViewDto> getNguoiDungTrongLopByNamHoc(int pageNumber, int pageSize , int namHoc, long lopId)  {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<NguoiDungTrongLopViewDto> page = nguoiDungTrongLopRepository.getNguoiDungTrongLopByNamHoc(namHoc, lopId,pageable);
+        return new NguoiDungTrongLopResponseDto<>(page.getContent(), page.getTotalElements());
+    }
+
+    @Override
+    public NguoiDungTrongLop updateNguoiDungTrongLop(NguoiDungTrongLop nguoiDungTrongLop)  throws  Exception{
+        NguoiDungTrongLop ngdung = nguoiDungTrongLopRepository.findById(nguoiDungTrongLop.getId()).orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng cần sửa dữ liệu") );
+        List<NguoiDungTrongLop> nguoiDUngTrongLop = nguoiDungTrongLopRepository.findByNamHocAndNguoiDungId(nguoiDungTrongLop.getNguoiDungId(), nguoiDungTrongLop.getNamhoc());
+        if (!nguoiDUngTrongLop.isEmpty()) {
+            throw new Exception("Người dùng đã có lớp trong năm học");
+        }
+        //đổi lớp cho người dùng thuộc năm học này
+        ngdung.setLopId(nguoiDungTrongLop.getLopId());
+        return nguoiDungTrongLopRepository.save(ngdung);
+    }
+
+    @Override
+    public void deleteNguoiDungTrongLop(long id) {
+        if (!nguoiDungTrongLopRepository.existsById(id)) {
+            throw new RuntimeException("Không tìm thấy người dùng cần xóa " + id);
+        }
+        nguoiDungRepository.deleteById(id);
     }
 
 }
