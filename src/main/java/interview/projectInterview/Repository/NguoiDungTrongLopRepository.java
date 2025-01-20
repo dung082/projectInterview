@@ -28,4 +28,10 @@ public interface NguoiDungTrongLopRepository extends JpaRepository<NguoiDungTron
             "FROM NguoiDungTrongLop ng " +
             "WHERE ng.nguoiDungId = :nguoidungid AND ng.namhoc = :namhoc")
     List<NguoiDungTrongLop> findByNamHocAndNguoiDungId(Long nguoidungid, int namhoc);
+
+//    @Query("SELECT new interview.projectInterview.Models.NguoiDungTrongLop( " +
+//            "ng.id , ng.lopId , ng.nguoiDungId , ng.namhoc ) " +
+//            "FROM NguoiDungTrongLop ng " +
+//            "WHERE ng.nguoiDungId = :nguoidungid AND ng.namhoc = :namhoc")
+//    List<NguoiDungTrongLop> findByNguoiDungId(Long nguoidungid, int namhoc);
 }

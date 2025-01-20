@@ -1,6 +1,7 @@
 package interview.projectInterview.Models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -12,12 +13,15 @@ public class NguoiDungTrongLop {
     private long id;
 
     @Column(name = "lopid", nullable = false)
+    @NotBlank(message = "Mã lớp không được để trống")
     private long lopId;
 
     @Column(name = "nguoidungid", nullable = false)
+    @NotBlank(message = "Mã người dùng không được để trống")
     private long nguoiDungId;
 
     @Column(name = "namhoc", nullable = false)
+    @NotBlank(message = "Năm học không được để trống")
     private int namhoc;
 
 

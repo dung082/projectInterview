@@ -98,10 +98,10 @@ public class NguoiDungTrongLopService implements INguoiDungTrongLopService {
     @Override
     public NguoiDungTrongLop updateNguoiDungTrongLop(NguoiDungTrongLop nguoiDungTrongLop)  throws  Exception{
         NguoiDungTrongLop ngdung = nguoiDungTrongLopRepository.findById(nguoiDungTrongLop.getId()).orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng cần sửa dữ liệu") );
-        List<NguoiDungTrongLop> nguoiDUngTrongLop = nguoiDungTrongLopRepository.findByNamHocAndNguoiDungId(nguoiDungTrongLop.getNguoiDungId(), nguoiDungTrongLop.getNamhoc());
-        if (!nguoiDUngTrongLop.isEmpty()) {
-            throw new Exception("Người dùng đã có lớp trong năm học");
-        }
+//        List<NguoiDungTrongLop> nguoiDUngTrongLop = nguoiDungTrongLopRepository.findByNamHocAndNguoiDungId(nguoiDungTrongLop.getNguoiDungId(), nguoiDungTrongLop.getNamhoc());
+//        if (!nguoiDUngTrongLop.isEmpty()) {
+//            throw new Exception("Người dùng đã có lớp trong năm học");
+//        }
         //đổi lớp cho người dùng thuộc năm học này
         ngdung.setLopId(nguoiDungTrongLop.getLopId());
         return nguoiDungTrongLopRepository.save(ngdung);

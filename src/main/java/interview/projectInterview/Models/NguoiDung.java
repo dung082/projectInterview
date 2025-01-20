@@ -2,6 +2,7 @@ package interview.projectInterview.Models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
@@ -16,16 +17,20 @@ public class NguoiDung {
     private long id;
 
     @Column(name = "hoten", nullable = false)
+    @NotBlank(message="Họ và tên không được để trống")
     private String hoTen;
 
     @Column(name = "gioitinh", nullable = false)
+    @NotBlank(message = "Giới tính không được để trống")
     private int gioiTinh;
 
     @Column(name = "diachi")
+    @NotBlank(message = "Địa chỉ không được để trống")
     private String diaChi;
 
     @Column(name = "ngaysinh", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @NotBlank(message = "Ngày sinh không được để trống")
     private Date ngaySinh;
 
     @Column(name = "role", nullable = false)

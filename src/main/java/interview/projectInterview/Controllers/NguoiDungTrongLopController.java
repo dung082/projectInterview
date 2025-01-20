@@ -4,6 +4,7 @@ import interview.projectInterview.Models.NguoiDungTrongLop;
 import interview.projectInterview.ResponseDto.NguoiDungTrongLopResponseDto;
 import interview.projectInterview.Services.Interface.INguoiDungTrongLopService;
 import interview.projectInterview.ViewDto.NguoiDungTrongLopViewDto;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class NguoiDungTrongLopController {
 
     @RequestMapping(path = "/createNguoiDungTrongLop", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public NguoiDungTrongLop createNguoiDungTrongLop(@RequestBody NguoiDungTrongLop nguoiDungTrongLop) throws Exception {
+    public NguoiDungTrongLop createNguoiDungTrongLop(@Valid  @RequestBody NguoiDungTrongLop nguoiDungTrongLop) throws Exception {
 
         return iNguoiDungTrongLopService.createNguoiDungTrongLop(nguoiDungTrongLop);
     }
@@ -41,13 +42,13 @@ public class NguoiDungTrongLopController {
 
     @RequestMapping(path = "/updateNguoiDungTrongLop", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public NguoiDungTrongLop updateNguoiDungTrongLop(@RequestBody NguoiDungTrongLop nguoiDungTrongLop) throws Exception {
+    public NguoiDungTrongLop updateNguoiDungTrongLop(@Valid @RequestBody NguoiDungTrongLop nguoiDungTrongLop) throws Exception {
 
-        return iNguoiDungTrongLopService.updateNguoiDungTrongLop    (nguoiDungTrongLop);
+        return iNguoiDungTrongLopService.updateNguoiDungTrongLop(nguoiDungTrongLop);
     }
 
     @RequestMapping(path = "/deleteNguoiDungTrongLop/{id}", method = RequestMethod.POST)
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteNguoiDungTrongLop(@PathVariable Long id) {
         iNguoiDungTrongLopService.deleteNguoiDungTrongLop(id);
         return ResponseEntity.noContent().build();
     }
