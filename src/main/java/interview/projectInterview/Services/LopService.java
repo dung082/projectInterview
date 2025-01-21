@@ -2,9 +2,11 @@ package interview.projectInterview.Services;
 
 import interview.projectInterview.Models.Lop;
 import interview.projectInterview.Models.NguoiDung;
+import interview.projectInterview.Models.RedisLopModel;
 import interview.projectInterview.Repository.LopRepository;
 import interview.projectInterview.Repository.NguoiDungRepository;
 import interview.projectInterview.Repository.NguoiDungTrongLopRepository;
+import interview.projectInterview.Repository.RedisLopRepository;
 import interview.projectInterview.ResponseDto.LopResponseDto;
 import interview.projectInterview.ResponseDto.NguoiDungResponseDto;
 import interview.projectInterview.Services.Interface.ILopService;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,8 +25,12 @@ public class LopService implements ILopService {
     @Autowired
     private LopRepository lopRepository;
 
-    public LopService(LopRepository lopRepository) {
+    @Autowired
+    private RedisLopRepository redisLopRepository;
+
+    public LopService(LopRepository lopRepository,RedisLopRepository redisLopRepository) {
         this.lopRepository = lopRepository;
+        this.redisLopRepository = redisLopRepository;
     }
 
     public LopService() {
@@ -31,7 +38,30 @@ public class LopService implements ILopService {
 
     @Override
     public List<Lop> getAllLop() {
-        return lopRepository.findAll();
+
+        List<RedisLopModel> redisLopModels = new ArrayList<RedisLopModel>();
+        redisLopRepository.findAll().forEach(redisLopModels::add);
+
+        if (!redisLopModels.isEmpty()) {
+            return redisLopModels.stream()
+                    .map(redisLopModel -> new Lop(
+                            redisLopModel.getId(),
+                            redisLopModel.getMaLop(),
+                            redisLopModel.getTenLop()
+                    ))
+                    .toList();
+        }
+
+        List<Lop> lops = lopRepository.findAll();
+        lops.forEach(lop -> {
+            RedisLopModel redisLopModel = new RedisLopModel();
+            redisLopModel.setId(lop.getId());
+            redisLopModel.setMaLop(lop.getMaLop());
+            redisLopModel.setTenLop(lop.getTenLop());
+            redisLopRepository.save(redisLopModel); // Lưu vào Redis
+        });
+
+        return lops;
     }
 
     @Override

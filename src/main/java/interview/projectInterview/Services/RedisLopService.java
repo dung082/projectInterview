@@ -1,5 +1,6 @@
 package interview.projectInterview.Services;
 
+import interview.projectInterview.Models.Lop;
 import interview.projectInterview.Models.NguoiDung;
 import interview.projectInterview.Models.RedisLopModel;
 import interview.projectInterview.Repository.LopRepository;
@@ -22,7 +23,6 @@ import java.util.List;
 public class RedisLopService implements IRedisLopService {
     @Autowired
     private RedisLopRepository redisLopRepository;
-
 //    public RedisLopService(RedisLopRepository redisLopRepository) {
 //        this.redisLopRepository = redisLopRepository;
 //    }
@@ -42,12 +42,12 @@ public class RedisLopService implements IRedisLopService {
     }
 
     @Override
-    public RedisLopModel updateRedisLop(RedisLopModel user) {
-        RedisLopModel redisLopModel = redisLopRepository.findById(user.getId()).orElse(null);
-        redisLopModel.setTenLop(user.getTenLop());
-        redisLopModel.setMaLop(user.getMaLop());
+    public RedisLopModel updateRedisLop(RedisLopModel redisLop) {
+        RedisLopModel redisLopModel = redisLopRepository.findById(redisLop.getId()).orElse(null);
+        redisLopModel.setTenLop(redisLop.getTenLop());
+        redisLopModel.setMaLop(redisLop.getMaLop());
 //        user.setTenLop(user.getTenLop());
-        return redisLopRepository.save(user);
+        return redisLopRepository.save(redisLopModel);
     }
 
     @Override

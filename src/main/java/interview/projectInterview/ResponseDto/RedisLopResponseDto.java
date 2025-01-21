@@ -1,13 +1,14 @@
 package interview.projectInterview.ResponseDto;
 
+import interview.projectInterview.Models.Lop;
 import interview.projectInterview.Models.RedisLopModel;
 
 import java.util.List;
 
-public class RedisLopResponseDto<RedisLopModel> {
+public class RedisLopResponseDto<Lop> {
     private long totals;
-    private List<RedisLopModel> results;
-    public RedisLopResponseDto(long totals, List<RedisLopModel> results) {
+    private List<Lop> results;
+    public RedisLopResponseDto(long totals, List<Lop> results) {
         this.totals = totals;
         this.results = results;
     }
@@ -20,11 +21,11 @@ public class RedisLopResponseDto<RedisLopModel> {
         this.totals = totals;
     }
 
-    public List<RedisLopModel> getResults() {
+    public List<Lop> getResults() {
         return results;
     }
 
-    public void setResults(List<RedisLopModel> results) {
+    public void setResults(List<Lop> results) {
         this.results = results;
     }
 }

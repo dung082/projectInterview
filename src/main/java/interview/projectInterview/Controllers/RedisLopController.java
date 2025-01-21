@@ -32,7 +32,7 @@ public class RedisLopController {
     public RedisLopModel getLop(@PathVariable long id) {
         return iRedisLopService.getRedisLopById(id);
     }
-    @RequestMapping(method = RequestMethod.GET, path = "/getAllRedisLops")
+        @RequestMapping(method = RequestMethod.GET, path = "/getAllRedisLops")
     public Iterable<RedisLopModel> getAllRedisLops() {
         return iRedisLopService.getAllRedisLops();
     }
