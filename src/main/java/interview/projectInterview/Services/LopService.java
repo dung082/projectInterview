@@ -39,9 +39,11 @@ public class LopService implements ILopService {
     @Override
     public List<Lop> getAllLop() {
 
+        // lấy dữ liệu lớp từ redis
         List<RedisLopModel> redisLopModels = new ArrayList<RedisLopModel>();
         redisLopRepository.findAll().forEach(redisLopModels::add);
 
+        // nếu dl redis có thì đưa về list lop và trả về kết quả
         if (!redisLopModels.isEmpty()) {
             return redisLopModels.stream()
                     .map(redisLopModel -> new Lop(
@@ -52,6 +54,7 @@ public class LopService implements ILopService {
                     .toList();
         }
 
+        //nếu dl từ redis rỗng thì lấy dl ừ db, lưu vào redis và trả về kết quả
         List<Lop> lops = lopRepository.findAll();
         lops.forEach(lop -> {
             RedisLopModel redisLopModel = new RedisLopModel();
